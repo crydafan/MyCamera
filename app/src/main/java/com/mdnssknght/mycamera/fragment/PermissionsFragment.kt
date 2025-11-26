@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.mdnssknght.mycamera.R
 import com.mdnssknght.mycamera.fragment.PermissionsFragmentDirections
+import androidx.navigation.findNavController
 
 private const val PERMISSIONS_REQUEST_CODE = 10
 private val PERMISSIONS_REQUIRED = arrayOf(Manifest.permission.CAMERA)
@@ -52,7 +53,7 @@ class PermissionsFragment : Fragment() {
 
     private fun navigateToCamera() {
         lifecycleScope.launchWhenStarted {
-            Navigation.findNavController(requireActivity(), R.id.fragment_container)
+            requireActivity().findNavController(R.id.fragment_container)
                 .navigate(PermissionsFragmentDirections.actionPermissionsToSelector())
         }
     }

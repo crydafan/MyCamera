@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mdnssknght.mycamera.R
 import com.mdnssknght.mycamera.util.GenericListAdapter
+import androidx.navigation.findNavController
 
 class SelectorFragment : Fragment() {
 
@@ -39,7 +40,7 @@ class SelectorFragment : Fragment() {
             adapter = GenericListAdapter(cameraList, itemLayoutId = layoutId) { view, item, _ ->
                 view.findViewById<TextView>(android.R.id.text1).text = item.title
                 view.setOnClickListener {
-                    Navigation.findNavController(requireActivity(), R.id.fragment_container)
+                    requireActivity().findNavController(R.id.fragment_container)
                         .navigate(
                             SelectorFragmentDirections.actionSelectorToCamera(
                                 item.cameraId,
