@@ -146,7 +146,7 @@ impl StageInPipeline for Stage0 {
 
         mod cs {
             vulkano_shaders::shader! {
-                bytes: "shaders/finishing_0.spv"
+                bytes: "shaders/shiftbayer.spv"
             }
         }
 
@@ -255,7 +255,7 @@ impl StageInPipeline for Stage1 {
 
         mod cs {
             vulkano_shaders::shader! {
-                bytes: "shaders/finishing_1.spv"
+                bytes: "shaders/normalize.spv"
             }
         }
 
@@ -365,7 +365,7 @@ impl StageInPipeline for Stage2 {
 
         mod cs {
             vulkano_shaders::shader! {
-                bytes: "shaders/finishing_2.spv"
+                bytes: "shaders/demosaic.spv"
             }
         }
 
@@ -453,7 +453,7 @@ impl StageInPipeline for Stage3 {
     ) -> StageResources {
         mod cs {
             vulkano_shaders::shader! {
-                bytes: "shaders/finishing_3.spv"
+                bytes: "shaders/colorcorrection.spv"
             }
         }
 
@@ -578,7 +578,7 @@ impl StageInPipeline for Stage4 {
     ) -> StageResources {
         mod cs {
             vulkano_shaders::shader! {
-                bytes: "shaders/finishing_4.spv"
+                bytes: "shaders/gammacorrection.spv"
             }
         }
 
@@ -700,7 +700,7 @@ impl StageInPipeline for Stage5 {
 
         mod cs {
             vulkano_shaders::shader! {
-                bytes: "shaders/finishing_5.spv"
+                bytes: "shaders/quantize.spv"
             }
         }
 
