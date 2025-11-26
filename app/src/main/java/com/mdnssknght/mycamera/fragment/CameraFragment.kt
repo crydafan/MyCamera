@@ -260,32 +260,36 @@ class CameraFragment : Fragment() {
                                     CameraCharacteristics.SENSOR_INFO_COLOR_FILTER_ARRANGEMENT
                                 )!!
 
-                                val colorGains = FloatArray(4)
-                                result.metadata.get(CaptureResult.COLOR_CORRECTION_GAINS)!!
-                                    .copyTo(colorGains, 0)
+                                val colorGains = FloatArray(4).also {
+                                    result.metadata.get(CaptureResult.COLOR_CORRECTION_GAINS)!!
+                                        .copyTo(it, 0)
+                                }
 
                                 val whiteLevel =
                                     characteristics.get(CameraCharacteristics.SENSOR_INFO_WHITE_LEVEL)!!
 
-                                val blackLevel = IntArray(4)
-                                characteristics.get(CameraCharacteristics.SENSOR_BLACK_LEVEL_PATTERN)!!
-                                    .copyTo(blackLevel, 0)
-
-                                val forwardMatrix1 = FloatArray(9)
-                                val forwardMatrix2 = FloatArray(9)
+                                val blackLevel = IntArray(4).also {
+                                    characteristics.get(CameraCharacteristics.SENSOR_BLACK_LEVEL_PATTERN)!!
+                                        .copyTo(it, 0)
+                                }
 
                                 val rationalDestination = arrayOfNulls<Rational>(9)
 
-                                characteristics.get(CameraCharacteristics.SENSOR_FORWARD_MATRIX1)!!
-                                    .copyElements(rationalDestination, 0)
-                                rationalDestination.forEachIndexed { index, rational ->
-                                    forwardMatrix1[index] = rational!!.toFloat()
+                                val forwardMatrix1 = FloatArray(9).also {
+                                    characteristics.get(CameraCharacteristics.SENSOR_FORWARD_MATRIX1)!!
+                                        .copyElements(rationalDestination, 0)
+                                    rationalDestination.forEachIndexed { index, rational ->
+                                        it[index] = rational!!.toFloat()
+                                    }
+
                                 }
 
-                                characteristics.get(CameraCharacteristics.SENSOR_FORWARD_MATRIX2)!!
-                                    .copyElements(rationalDestination, 0)
-                                rationalDestination.forEachIndexed { index, rational ->
-                                    forwardMatrix2[index] = rational!!.toFloat()
+                                val forwardMatrix2 = FloatArray(9).also {
+                                    characteristics.get(CameraCharacteristics.SENSOR_FORWARD_MATRIX2)!!
+                                        .copyElements(rationalDestination, 0)
+                                    rationalDestination.forEachIndexed { index, rational ->
+                                        it[index] = rational!!.toFloat()
+                                    }
                                 }
 
                                 RawProcessor.process(
