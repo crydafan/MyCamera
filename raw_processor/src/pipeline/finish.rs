@@ -48,9 +48,10 @@ struct Stage2 {
 }
 
 struct Stage3 {
-    forward_matrix_1: [f32; 9],
-    forward_matrix_2: [f32; 9],
-    neutral_point: [f32; 3],
+    // forward_matrix_1: [f32; 9],
+    // forward_matrix_2: [f32; 9],
+    color_correction_transform: [f32; 9],
+    // neutral_point: [f32; 3],
 }
 
 struct Stage4 {}
@@ -505,53 +506,74 @@ impl StageInPipeline for Stage3 {
         #[derive(BufferContents)]
         #[repr(C)]
         struct Constants {
-            forward_matrix_1: [[f32; 4]; 3],
-            forward_matrix_2: [[f32; 4]; 3],
-            neutral_point: [f32; 3],
+            // forward_matrix_1: [[f32; 4]; 3],
+            // forward_matrix_2: [[f32; 4]; 3],
+            color_correction_transform: [[f32; 4]; 3],
+            // neutral_point: [f32; 3],
         }
 
         let constants = Constants {
-            forward_matrix_1: [
+            // forward_matrix_1: [
+            //     [
+            //         self.forward_matrix_1[0],
+            //         self.forward_matrix_1[1],
+            //         self.forward_matrix_1[2],
+            //         0.0, /* padding */
+            //     ],
+            //     [
+            //         self.forward_matrix_1[3],
+            //         self.forward_matrix_1[4],
+            //         self.forward_matrix_1[5],
+            //         0.0, /* padding */
+            //     ],
+            //     [
+            //         self.forward_matrix_1[6],
+            //         self.forward_matrix_1[7],
+            //         self.forward_matrix_1[8],
+            //         0.0, /* padding */
+            //     ],
+            // ],
+            // forward_matrix_2: [
+            //     [
+            //         self.forward_matrix_2[0],
+            //         self.forward_matrix_2[1],
+            //         self.forward_matrix_2[2],
+            //         0.0, /* padding2*/
+            //     ],
+            //     [
+            //         self.forward_matrix_2[3],
+            //         self.forward_matrix_2[4],
+            //         self.forward_matrix_2[5],
+            //         0.0, /* padding2*/
+            //     ],
+            //     [
+            //         self.forward_matrix_2[6],
+            //         self.forward_matrix_2[7],
+            //         self.forward_matrix_2[8],
+            //         0.0, /* padding */
+            //     ],
+            // ],
+            color_correction_transform: [
                 [
-                    self.forward_matrix_1[0],
-                    self.forward_matrix_1[1],
-                    self.forward_matrix_1[2],
-                    0.0, /* padding */
-                ],
-                [
-                    self.forward_matrix_1[3],
-                    self.forward_matrix_1[4],
-                    self.forward_matrix_1[5],
-                    0.0, /* padding */
-                ],
-                [
-                    self.forward_matrix_1[6],
-                    self.forward_matrix_1[7],
-                    self.forward_matrix_1[8],
-                    0.0, /* padding */
-                ],
-            ],
-            forward_matrix_2: [
-                [
-                    self.forward_matrix_2[0],
-                    self.forward_matrix_2[1],
-                    self.forward_matrix_2[2],
+                    self.color_correction_transform[0],
+                    self.color_correction_transform[1],
+                    self.color_correction_transform[2],
                     0.0, /* padding2*/
                 ],
                 [
-                    self.forward_matrix_2[3],
-                    self.forward_matrix_2[4],
-                    self.forward_matrix_2[5],
+                    self.color_correction_transform[3],
+                    self.color_correction_transform[4],
+                    self.color_correction_transform[5],
                     0.0, /* padding2*/
                 ],
                 [
-                    self.forward_matrix_2[6],
-                    self.forward_matrix_2[7],
-                    self.forward_matrix_2[8],
+                    self.color_correction_transform[6],
+                    self.color_correction_transform[7],
+                    self.color_correction_transform[8],
                     0.0, /* padding */
                 ],
             ],
-            neutral_point: self.neutral_point,
+            // neutral_point: self.neutral_point,
         };
 
         command_buffer_builder
@@ -791,6 +813,7 @@ impl Finish {
         black_level: [i32; 4],
         neutral_point: [f32; 3],
         color_gains: [f32; 4],
+        color_correction_transform: [f32; 9],
         forward_matrix_1: [f32; 9],
         forward_matrix_2: [f32; 9],
     ) {
@@ -817,9 +840,10 @@ impl Finish {
 
         // Color correction (sensor color space to CIE XYZ and then to linear sRGB)
         let stage3 = Stage3 {
-            forward_matrix_1,
-            forward_matrix_2,
-            neutral_point,
+            // forward_matrix_1,
+            // forward_matrix_2,
+            color_correction_transform,
+            // neutral_point,
         };
 
         // Gamma correction

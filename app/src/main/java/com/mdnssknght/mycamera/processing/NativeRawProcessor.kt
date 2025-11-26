@@ -24,6 +24,7 @@ class NativeRawProcessor {
             blackLevel: IntArray,
             neutralPoint: FloatArray,
             colorGains: FloatArray,
+            colorCorrectionTransform: FloatArray,
             forwardMatrix1: FloatArray,
             forwardMatrix2: FloatArray,
         )

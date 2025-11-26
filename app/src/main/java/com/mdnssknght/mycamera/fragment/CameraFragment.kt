@@ -299,6 +299,14 @@ class CameraFragment : Fragment() {
                                     }
                                 }
 
+                                val colorCorrectionTransform = FloatArray(9).also {
+                                    result.metadata.get(CaptureResult.COLOR_CORRECTION_TRANSFORM)!!
+                                        .copyElements(rationalDestination, 0)
+                                    rationalDestination.forEachIndexed { index, rational ->
+                                        it[index] = rational!!.toFloat()
+                                    }
+                                }
+
                                 RawProcessor.process(
                                     width,
                                     height,
@@ -309,6 +317,7 @@ class CameraFragment : Fragment() {
                                     blackLevel,
                                     neutralPoint,
                                     colorGains,
+                                    colorCorrectionTransform,
                                     forwardMatrix1,
                                     forwardMatrix2
                                 )

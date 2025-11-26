@@ -28,6 +28,7 @@ object RawProcessor {
         blackLevel: IntArray,
         neutralPoint: FloatArray,
         colorGains: FloatArray,
+        colorCorrectionTransform: FloatArray,
         forwardMatrix1: FloatArray,
         forwardMatrix2: FloatArray,
     ) {
@@ -42,6 +43,7 @@ object RawProcessor {
             blackLevel,
             neutralPoint,
             colorGains,
+            colorCorrectionTransform,
             forwardMatrix1,
             forwardMatrix2
         )
