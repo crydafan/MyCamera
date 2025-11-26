@@ -216,7 +216,7 @@ class CameraFragment : Fragment() {
         session.setRepeatingRequest(captureRequest.build(), null, cameraHandler)
 
         // Listen to the capture button.
-        fragmentCameraBinding.captureButton.setOnClickListener {
+        fragmentCameraBinding.captureButton.setOnClickListener { it ->
 
             // Disable click listener to prevent multiple requests simultaneously in flight.
             it.isEnabled = false
