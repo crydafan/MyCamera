@@ -26,6 +26,7 @@ object RawProcessor {
         colorFilterArrangement: Int,
         whiteLevel: Int,
         blackLevel: IntArray,
+        neutralPoint: FloatArray,
         colorGains: FloatArray,
         forwardMatrix1: FloatArray,
         forwardMatrix2: FloatArray,
@@ -39,6 +40,7 @@ object RawProcessor {
             colorFilterArrangement,
             whiteLevel,
             blackLevel,
+            neutralPoint,
             colorGains,
             forwardMatrix1,
             forwardMatrix2

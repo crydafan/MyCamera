@@ -22,6 +22,7 @@ class NativeRawProcessor {
             colorFilterArrangement: Int,
             whiteLevel: Int,
             blackLevel: IntArray,
+            neutralPoint: FloatArray,
             colorGains: FloatArray,
             forwardMatrix1: FloatArray,
             forwardMatrix2: FloatArray,

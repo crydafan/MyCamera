@@ -260,6 +260,13 @@ class CameraFragment : Fragment() {
                                     CameraCharacteristics.SENSOR_INFO_COLOR_FILTER_ARRANGEMENT
                                 )!!
 
+                                val neutralPoint = FloatArray(3).also {
+                                    result.metadata.get(CaptureResult.SENSOR_NEUTRAL_COLOR_POINT)!!
+                                        .forEachIndexed { index, rational ->
+                                            it[index] = rational.toFloat()
+                                        }
+                                }
+
                                 val colorGains = FloatArray(4).also {
                                     result.metadata.get(CaptureResult.COLOR_CORRECTION_GAINS)!!
                                         .copyTo(it, 0)
@@ -300,6 +307,7 @@ class CameraFragment : Fragment() {
                                     colorFilterArrangement,
                                     whiteLevel,
                                     blackLevel,
+                                    neutralPoint,
                                     colorGains,
                                     forwardMatrix1,
                                     forwardMatrix2

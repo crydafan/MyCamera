@@ -2,8 +2,9 @@ RWTexture2D<half4> Rgba;
 
 [push_constant]
 cbuffer Uniforms {
-  float3x3 forwardMatrix1;
-  float3x3 forwardMatrix2;
+  row_major float3x3 forwardMatrix1;
+  row_major float3x3 forwardMatrix2;
+  float3 neutralPoint;
 }
 
 static const float3x3 M_XYZ_to_sRGB = float3x3(
@@ -14,10 +15,14 @@ static const float3x3 M_XYZ_to_sRGB = float3x3(
 void computeMain(uint3 threadId: SV_DispatchThreadID) {
   uint2 coordinates = threadId.xy;
 
-  float3 RGB = Rgba[coordinates].rgb;
+  float3 raw = Rgba[coordinates].rgb;
 
-  float3 XYZ = mul(RGB, forwardMatrix1);
+  // raw[0] *= 1.0 / neutralPoint[0];
+  // raw[1] *= 1.0 / neutralPoint[1];
+  // raw[2] *= 1.0 / neutralPoint[2];
+  raw *= 1.0 / neutralPoint;
 
+  float3 XYZ = mul(forwardMatrix1, raw);
   float3 sRGB = mul(M_XYZ_to_sRGB, XYZ);
 
   Rgba[coordinates] = half4(half3(sRGB), 1.0h);

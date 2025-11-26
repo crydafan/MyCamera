@@ -75,6 +75,7 @@ pub extern "system" fn Java_com_mdnssknght_mycamera_processing_NativeRawProcesso
     color_filter_arrangement: jint,
     white_level: jint,
     black_level: JIntArray,
+    neutral_point: JFloatArray,
     color_gains: JFloatArray,
     forward_matrix_1: JFloatArray,
     forward_matrix_2: JFloatArray,
@@ -84,6 +85,13 @@ pub extern "system" fn Java_com_mdnssknght_mycamera_processing_NativeRawProcesso
     let black_level = {
         let mut data = [0i32; 4];
         env.get_int_array_region(black_level, 0, &mut data).unwrap();
+        data
+    };
+
+    let neutral_point = {
+        let mut data = [0f32; 3];
+        env.get_float_array_region(neutral_point, 0, &mut data)
+            .unwrap();
         data
     };
 
@@ -118,6 +126,7 @@ pub extern "system" fn Java_com_mdnssknght_mycamera_processing_NativeRawProcesso
         color_filter_arrangement,
         white_level,
         black_level,
+        neutral_point,
         color_gains,
         forward_matrix_1,
         forward_matrix_2,

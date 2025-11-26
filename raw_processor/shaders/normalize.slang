@@ -23,5 +23,5 @@ void computeMain(uint3 threadId: SV_DispatchThreadID) {
   float norm = float(RawShifted[int2(x, y)] - blackLevel[index]) /
                float(whiteLevel - blackLevel[index]);
 
-  RawNormalized[int2(x, y)] = half(norm * colorGains[index]);
+  RawNormalized[int2(x, y)] = half(norm);
 }
