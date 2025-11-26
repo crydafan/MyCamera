@@ -1,4 +1,4 @@
-RWTexture2D<half4> Rgba;
+RWTexture2D<half4> Rgb;
 RWTexture2D<float4> Quantized;
 
 [Shader("compute")]
@@ -6,5 +6,5 @@ RWTexture2D<float4> Quantized;
 void computeMain(uint3 threadId: SV_DispatchThreadID) {
   uint2 coordinates = threadId.xy;
   // Quantization is done automatically by the device
-  Quantized[coordinates] = Rgba[coordinates];
+  Quantized[coordinates] = Rgb[coordinates];
 }

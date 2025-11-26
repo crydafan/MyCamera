@@ -1,6 +1,6 @@
 // https://casual-effects.com/research/McGuire2009Bayer/bayer-jgt09.pdf
 RWTexture2D<half> RawNormalized;
-RWTexture2D<half4> Rgba;
+RWTexture2D<half4> Rgb;
 
 [push_constant]
 cbuffer Uniforms { int2 size; }
@@ -47,7 +47,7 @@ void computeMain(uint3 threadId: SV_DispatchThreadID) {
   // w phi
   float4 pattern = kA * A + kB * B + kC * C + kD * D + kE * E + kF * F;
 
-  Rgba[int2(x, y)] =
+  Rgb[int2(x, y)] =
       (yPhase == 0)
           ? ((xPhase == 0)
                  ? half4(half(C), half(pattern.x), half(pattern.y), 1.0h)

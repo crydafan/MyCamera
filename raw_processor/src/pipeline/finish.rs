@@ -347,7 +347,7 @@ impl StageInPipeline for Stage2 {
         context: &context::Context,
         input: Option<StageOutput>,
     ) -> StageResources {
-        let (_, rgba_image_view) = {
+        let (_, rgb_image_view) = {
             let image = Image::new(
                 context.memory_allocator.clone(),
                 ImageCreateInfo {
@@ -397,7 +397,7 @@ impl StageInPipeline for Stage2 {
                     0,
                     input.unwrap().image_views.get(0).unwrap().clone(),
                 ),
-                WriteDescriptorSet::image_view(1, rgba_image_view.clone()),
+                WriteDescriptorSet::image_view(1, rgb_image_view.clone()),
             ],
             [],
         )
@@ -406,7 +406,7 @@ impl StageInPipeline for Stage2 {
         StageResources {
             compute_pipeline,
             descriptor_set,
-            image_views: vec![rgba_image_view],
+            image_views: vec![rgb_image_view],
             buffers: vec![],
             commands: vec![],
         }
