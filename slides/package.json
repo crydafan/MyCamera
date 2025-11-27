@@ -1,0 +1,17 @@
+{
+  "name": "slides",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "reveal.js": "^5.2.1",
+    "serve": "^14.2.5"
+  }
+}
