@@ -61,3 +61,20 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
+
+tasks.register<Exec>("makeShaders") {
+    workingDir("../raw_processor/shaders")
+    commandLine("make")
+}
+
+tasks.register<Exec>("makeLibrary") {
+    workingDir("..")
+    commandLine("make")
+    mustRunAfter("makeShaders")
+}
+
+tasks.whenTaskAdded {
+    if (name.startsWith("assemble")) {
+        dependsOn("makeShaders", "makeLibrary")
+    }
+}
