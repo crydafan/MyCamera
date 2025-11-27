@@ -41,14 +41,16 @@ class AutoFitSurfaceView @JvmOverloads constructor(
             setMeasuredDimension(width, height)
         } else {
 
-            // Performs center-crop transformation of camera frames.
+            // Fit the camera preview within the available space while maintaining aspect ratio.
             val newWidth: Int
             val newHeight: Int
             val actualRatio = if (width > height) aspectRatio else 1f / aspectRatio
-            if (width < height * actualRatio) {
+            if (width > height * actualRatio) {
+                // Width is too large, constrain by height.
                 newWidth = (height * actualRatio).roundToInt()
                 newHeight = height
             } else {
+                // Height is too large, constrain by width.
                 newWidth = width
                 newHeight = (width / actualRatio).roundToInt()
             }

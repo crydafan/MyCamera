@@ -41,7 +41,7 @@ import com.mdnssknght.mycamera.databinding.FragmentCameraBinding
 import com.mdnssknght.mycamera.processing.RawProcessor
 import com.mdnssknght.mycamera.util.OrientationLiveData
 import com.mdnssknght.mycamera.util.computeExifOrientation
-import com.mdnssknght.mycamera.util.getPreviewOutputSize
+import com.mdnssknght.mycamera.util.getPreviewOutputSize4x3
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -142,7 +142,7 @@ class CameraFragment : Fragment() {
         fragmentCameraBinding.viewfinder.holder.addCallback(object : SurfaceHolder.Callback {
             override fun surfaceCreated(holder: SurfaceHolder) {
                 // Selects appropriate preview size and configures viewfinder.
-                val previewSize = getPreviewOutputSize(
+                val previewSize = getPreviewOutputSize4x3(
                     fragmentCameraBinding.viewfinder.display,
                     characteristics,
                     SurfaceHolder::class.java
