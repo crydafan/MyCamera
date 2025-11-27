@@ -1,28 +1,841 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
   <head>
     <meta charset="utf-8" />
-    <title>My Reveal.js Presentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Diapositivas</title>
 
     <link rel="stylesheet" href="node_modules/reveal.js/dist/reveal.css" />
     <link rel="stylesheet" href="node_modules/reveal.js/dist/theme/black.css" />
+    <link
+      rel="stylesheet"
+      href="node_modules/reveal.js/plugin/highlight/monokai.css"
+    />
+
+    <style>
+      :root {
+        --primary-color: #667eea;
+        --secondary-color: #764ba2;
+        --accent-color: #f093fb;
+      }
+
+      .reveal {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 32px;
+      }
+
+      .reveal h1 {
+        font-size: 2.2em;
+        margin-bottom: 0.3em;
+      }
+
+      .reveal h2 {
+        font-size: 1.8em;
+        margin-bottom: 0.5em;
+      }
+
+      .reveal h3 {
+        font-size: 1.3em;
+        margin-bottom: 0.3em;
+      }
+
+      .reveal p {
+        margin: 0.5em 0;
+      }
+
+      .reveal ul {
+        margin: 0.5em 0;
+      }
+
+      .reveal li {
+        margin: 0.3em 0;
+      }
+
+      .reveal h1,
+      .reveal h2,
+      .reveal h3 {
+        text-transform: none;
+        font-weight: 600;
+      }
+
+      .reveal h1 {
+        color: #fff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .reveal .gradient-text {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .reveal section img {
+        border: none;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        border-radius: 8px;
+      }
+
+      .reveal .tech-stack {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .reveal .tech-item {
+        background: rgba(102, 126, 234, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        border: 2px solid var(--primary-color);
+      }
+
+      .reveal .tech-item h3 {
+        font-size: 1.1em;
+        margin-bottom: 0.3em;
+      }
+
+      .reveal .tech-item p {
+        font-size: 0.75em;
+        margin: 0;
+      }
+
+      .reveal .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .reveal .feature-item {
+        background: rgba(118, 75, 162, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        text-align: left;
+      }
+
+      .reveal .feature-item h3 {
+        color: var(--accent-color);
+        margin-bottom: 0.3em;
+        font-size: 1em;
+      }
+
+      .reveal .feature-item p {
+        font-size: 0.75em;
+        margin: 0;
+      }
+
+      .reveal .pipeline-step {
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.2),
+          rgba(118, 75, 162, 0.2)
+        );
+        padding: 10px 20px;
+        margin: 8px 0;
+        border-radius: 8px;
+        border-left: 4px solid var(--primary-color);
+        font-size: 0.8em;
+      }
+
+      .reveal .highlight-box {
+        background: rgba(240, 147, 251, 0.1);
+        border: 2px solid var(--accent-color);
+        padding: 15px;
+        border-radius: 10px;
+        margin: 15px 0;
+      }
+
+      .reveal .highlight-box h3 {
+        margin-top: 0;
+        margin-bottom: 0.3em;
+      }
+
+      .reveal .highlight-box p {
+        margin: 0;
+        font-size: 0.85em;
+      }
+
+      .reveal code {
+        background: rgba(102, 126, 234, 0.2);
+        padding: 2px 8px;
+        border-radius: 4px;
+      }
+
+      .reveal .small-text {
+        font-size: 0.7em;
+        color: #aaa;
+      }
+
+      .reveal .demo-section {
+        position: relative;
+        height: 500px;
+      }
+
+      .reveal .demo-section img {
+        max-height: 450px;
+        object-fit: contain;
+      }
+
+      .reveal .arch-diagram {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        margin: 30px auto;
+        max-width: 600px;
+      }
+
+      .reveal .arch-box {
+        background: rgba(102, 126, 234, 0.2);
+        border: 3px solid var(--primary-color);
+        border-radius: 12px;
+        padding: 20px 30px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .reveal .arch-box.rust {
+        background: rgba(118, 75, 162, 0.2);
+        border-color: var(--secondary-color);
+      }
+
+      .reveal .arch-box h3 {
+        margin: 0;
+        font-size: 1.2em;
+        color: var(--accent-color);
+      }
+
+      .reveal .arch-box p {
+        margin: 0.3em 0 0 0;
+        font-size: 0.8em;
+        color: #ccc;
+      }
+
+      .reveal .arch-arrow {
+        font-size: 2em;
+        color: var(--accent-color);
+        font-weight: bold;
+      }
+
+      .reveal .pipeline-list {
+        background: rgba(0, 0, 0, 0.3);
+        border-left: 4px solid var(--accent-color);
+        padding: 15px 20px;
+        margin-top: 15px;
+        border-radius: 8px;
+      }
+
+      .reveal .pipeline-list ul {
+        margin: 0;
+        padding-left: 20px;
+        text-align: left;
+      }
+
+      .reveal .pipeline-list li {
+        font-size: 0.75em;
+        margin: 0.2em 0;
+      }
+    </style>
   </head>
   <body>
     <div class="reveal">
       <div class="slides">
-        <section>Welcome to Reveal.js!</section>
-        <section>Slide 2</section>
+        <!-- Title Slide -->
+        <section
+          data-background-gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+        >
+          <h1>My Camera</h1>
+          <h3>Procesamiento de Imágenes RAW con Aceleración GPU</h3>
+          <p style="margin-top: 50px">
+            <small>Una Aplicación Personalizada de Cámara Android</small><br />
+            <small>Explorando la Fotografía Computacional en Smartphones</small>
+          </p>
+        </section>
+
+        <!-- Project Overview -->
         <section>
-          <h2>Vertical Slides</h2>
-          <section>Sub-slide 1</section>
-          <section>Sub-slide 2</section>
+          <h2>Descripción del Proyecto</h2>
+          <p>
+            Una aplicación de cámara de alto rendimiento que captura y procesa
+            datos RAW del sensor usando un pipeline personalizado acelerado por
+            GPU
+          </p>
+          <div class="feature-grid">
+            <div class="feature-item">
+              <h3>📸 Captura RAW</h3>
+              <p>
+                Acceso directo a datos del sensor sin procesar en formato DNG
+              </p>
+            </div>
+            <div class="feature-item">
+              <h3>⚡ Procesamiento GPU</h3>
+              <p>
+                Procesamiento de imágenes basado en Vulkan para máximo
+                rendimiento
+              </p>
+            </div>
+            <div class="feature-item">
+              <h3>🎨 ISP Personalizado</h3>
+              <p>
+                Control completo sobre el pipeline de procesamiento de imágenes
+              </p>
+            </div>
+            <div class="feature-item">
+              <h3>📱 Integración Nativa</h3>
+              <p>Rust + Kotlin para rendimiento óptimo</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Motivation -->
+        <section>
+          <h2>¿Por Qué Construir una Cámara Personalizada?</h2>
+          <ul style="font-size: 0.9em; line-height: 1.8">
+            <li>
+              <strong>Comprensión:</strong> Aprender cómo funcionan realmente
+              las cámaras de smartphones por dentro
+            </li>
+            <li>
+              <strong>Control:</strong> Acceso completo a datos RAW del sensor y
+              parámetros de procesamiento
+            </li>
+            <li>
+              <strong>Rendimiento:</strong> Aprovechar el cómputo GPU para
+              procesamiento de imágenes en tiempo real
+            </li>
+            <li>
+              <strong>Experimentación:</strong> Probar algoritmos personalizados
+              y técnicas de fotografía computacional
+            </li>
+            <li>
+              <strong>Stack Moderno:</strong> Combinar Kotlin, Rust y Vulkan en
+              una aplicación del mundo real
+            </li>
+          </ul>
+        </section>
+
+        <!-- Technical Stack -->
+        <section>
+          <h2>Stack Tecnológico</h2>
+          <div class="tech-stack">
+            <div class="tech-item">
+              <h3>Kotlin</h3>
+              <p>UI de Android e integración con Camera2 API</p>
+            </div>
+            <div class="tech-item">
+              <h3>Rust</h3>
+              <p>Núcleo de procesamiento de imágenes de alto rendimiento</p>
+            </div>
+            <div class="tech-item">
+              <h3>Vulkan</h3>
+              <p>Compute Shaders GPU para procesamiento paralelo</p>
+            </div>
+            <div class="tech-item">
+              <h3>JNI</h3>
+              <p>Puente nativo entre Kotlin y Rust</p>
+            </div>
+          </div>
+          <div class="highlight-box" style="margin-top: 40px">
+            <p>
+              <strong>¿Por qué este stack?</strong> Combina el framework moderno
+              de UI de Android con rendimiento a nivel de sistemas y aceleración
+              GPU
+            </p>
+          </div>
+        </section>
+
+        <!-- Architecture -->
+        <section>
+          <section>
+            <h2>Arquitectura del Sistema</h2>
+            <p>Tres capas principales trabajando en conjunto</p>
+          </section>
+
+          <section>
+            <h3>Capa de Aplicación</h3>
+            <div class="arch-box" style="max-width: 500px; margin: 40px auto">
+              <h3>Aplicación Android</h3>
+              <p>Kotlin + Camera2 API</p>
+            </div>
+            <ul
+              style="
+                font-size: 0.85em;
+                text-align: left;
+                max-width: 500px;
+                margin: 30px auto;
+              "
+            >
+              <li>Interfaz de usuario moderna</li>
+              <li>Control de cámara de bajo nivel</li>
+              <li>Gestión de permisos y ciclo de vida</li>
+              <li>Captura de imágenes RAW</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Puente Nativo</h3>
+            <div
+              style="
+                font-size: 2.5em;
+                color: var(--accent-color);
+                margin: 40px 0;
+              "
+            >
+              JNI
+            </div>
+            <p style="font-size: 0.9em; max-width: 600px; margin: 20px auto">
+              <strong>Java Native Interface</strong> conecta el código
+              Kotlin/Java con la biblioteca nativa de Rust
+            </p>
+            <ul
+              style="
+                font-size: 0.85em;
+                text-align: left;
+                max-width: 500px;
+                margin: 30px auto;
+              "
+            >
+              <li>Transferencia eficiente de buffers de imagen</li>
+              <li>Gestión segura de memoria entre lenguajes</li>
+              <li>Llamadas síncronas para procesamiento</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Motor de Procesamiento</h3>
+            <div
+              class="arch-box rust"
+              style="max-width: 500px; margin: 40px auto"
+            >
+              <h3>Procesador RAW</h3>
+              <p>Rust + Vulkan</p>
+            </div>
+            <div
+              class="pipeline-list"
+              style="max-width: 500px; margin: 20px auto"
+            >
+              <strong>Pipeline de 6 Etapas GPU:</strong>
+              <ul>
+                <li>Desplazamiento Bayer</li>
+                <li>Normalización</li>
+                <li>Demosaicing</li>
+                <li>Corrección de Color</li>
+                <li>Corrección Gamma</li>
+                <li>Cuantización</li>
+              </ul>
+            </div>
+          </section>
+        </section>
+
+        <!-- Image Processing Pipeline -->
+        <section>
+          <section>
+            <h2>Pipeline de Procesamiento de Imágenes</h2>
+            <p>
+              Seis etapas aceleradas por GPU transforman los datos RAW del
+              sensor en imágenes finales
+            </p>
+          </section>
+
+          <section>
+            <h3>Etapa 1: Desplazamiento del Patrón Bayer</h3>
+            <div class="pipeline-step">
+              <strong>Entrada:</strong> Datos RAW del sensor con patrón CFA
+              arbitrario<br />
+              <strong>Proceso:</strong> Desplazar píxeles para alinear con
+              patrón Bayer RGGB<br />
+              <strong>Salida:</strong> Arreglo Bayer normalizado
+            </div>
+            <pre><code class="language-rust" data-trim>
+// El shader se ajusta según el arreglo de filtros de color
+// RGGB, GRBG, GBRG, o BGGR → RGGB estandarizado
+RawShifted[coordinates] = Raw[coordinates + shiftVector];
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Etapa 2: Normalización</h3>
+            <div class="pipeline-step">
+              <strong>Entrada:</strong> Valores RAW de 16 bits con sesgo del
+              sensor<br />
+              <strong>Proceso:</strong> Sustracción de nivel negro + ganancias
+              de balance de blancos<br />
+              <strong>Salida:</strong> Valores normalizados de punto flotante
+              [0.0, 1.0]
+            </div>
+            <pre><code class="language-rust" data-trim>
+float norm = float(raw - blackLevel) / float(whiteLevel - blackLevel);
+norm *= colorGains[channelIndex];
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Etapa 3: Demosaicing</h3>
+            <div class="pipeline-step">
+              <strong>Entrada:</strong> Mosaico Bayer de un solo canal<br />
+              <strong>Proceso:</strong> Algoritmo de interpolación
+              Malvar-He-Cutler<br />
+              <strong>Salida:</strong> Imagen RGB completa con los tres canales
+              de color
+            </div>
+            <pre><code class="language-rust" data-trim>
+// Reconstruir valores de color faltantes usando píxeles vecinos
+// Cada píxel obtiene valores R, G y B mediante interpolación
+float4 pattern = kA * A + kB * B + kC * C + kD * D + kE * E + kF * F;
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Etapa 4: Corrección de Color</h3>
+            <div class="pipeline-step">
+              <strong>Entrada:</strong> RGB en espacio de color del sensor<br />
+              <strong>Proceso:</strong> Multiplicación matricial al espacio de
+              color sRGB<br />
+              <strong>Salida:</strong> Colores perceptualmente precisos
+            </div>
+            <pre><code class="language-rust" data-trim>
+// Transformar del espacio del sensor de la cámara a sRGB estándar
+float3 sRGB = mul(colorCorrectionTransform, rawRGB);
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Etapa 5: Corrección Gamma</h3>
+            <div class="pipeline-step">
+              <strong>Entrada:</strong> Valores de luz lineal<br />
+              <strong>Proceso:</strong> Aplicar curva gamma sRGB<br />
+              <strong>Salida:</strong> Valores listos para pantalla
+            </div>
+            <pre><code class="language-rust" data-trim>
+// Función de transferencia sRGB
+float3 l = 12.92 * linear;
+float3 h = 1.055 * pow(linear, 1/2.4) - 0.055;
+float3 out = select(linear <= 0.0031308, l, h);
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Etapa 6: Cuantización</h3>
+            <div class="pipeline-step">
+              <strong>Entrada:</strong> RGB de punto flotante de 16 bits<br />
+              <strong>Proceso:</strong> Convertir y limitar a 8 bits por
+              canal<br />
+              <strong>Salida:</strong> Imagen RGBA8 estándar lista para
+              visualización/almacenamiento
+            </div>
+            <pre><code class="language-rust" data-trim>
+// El hardware realiza cuantización automática
+Quantized[coordinates] = Rgb[coordinates];
+            </code></pre>
+          </section>
+        </section>
+
+        <!-- Vulkan Integration -->
+        <section>
+          <h2>¿Por Qué Vulkan?</h2>
+          <div class="feature-grid">
+            <div class="feature-item">
+              <h3>⚡ Rendimiento</h3>
+              <p>Acceso GPU de bajo nivel con sobrecarga mínima</p>
+            </div>
+            <div class="feature-item">
+              <h3>🔄 Procesamiento Paralelo</h3>
+              <p>Procesar millones de píxeles simultáneamente</p>
+            </div>
+            <div class="feature-item">
+              <h3>📱 Soporte Móvil</h3>
+              <p>Soporte nativo en dispositivos Android modernos</p>
+            </div>
+            <div class="feature-item">
+              <h3>🎯 Compute Shaders</h3>
+              <p>
+                Perfecto para cargas de trabajo de procesamiento de imágenes
+              </p>
+            </div>
+          </div>
+          <div class="highlight-box" style="margin-top: 30px">
+            <p>
+              <strong>Resultado:</strong> Procesamiento en tiempo real de
+              imágenes RAW de 12+ megapíxeles en hardware móvil
+            </p>
+          </div>
+        </section>
+
+        <!-- Rust Integration -->
+        <section>
+          <h2>Rust para Procesamiento de Imágenes</h2>
+          <ul style="font-size: 0.9em; line-height: 1.8">
+            <li>
+              <strong>Seguridad de Memoria:</strong> Abstracciones de costo cero
+              sin recolección de basura
+            </li>
+            <li>
+              <strong>Rendimiento:</strong> Rendimiento cercano a C++ con
+              características de lenguaje moderno
+            </li>
+            <li>
+              <strong>Vulkano:</strong> Bindings seguros de Rust para la API de
+              Vulkan
+            </li>
+            <li>
+              <strong>Puente JNI:</strong> Integración perfecta con
+              Android/Kotlin
+            </li>
+            <li>
+              <strong>Multiplataforma:</strong> Fácil de portar a otras
+              plataformas
+            </li>
+          </ul>
+          <pre><code class="language-rust" data-trim data-line-numbers="1-8">
+#[no_mangle]
+pub extern "system" fn Java_..._nativeProcess(
+    env: JNIEnv, handle: jlong, width: jint, height: jint,
+    data: JByteBuffer, /* ... */
+) {
+    let context = unsafe { &*(handle as *const pipeline::Context) };
+    finish.finish(context, data, /* parameters */);
+}
+          </code></pre>
+        </section>
+
+        <!-- Demo Section -->
+        <section>
+          <h2>Demostración de la Aplicación</h2>
+          <div class="demo-section">
+            <img
+              src="screenshot.jpg"
+              alt="Captura de Pantalla de la Aplicación"
+            />
+            <p class="small-text">
+              Visor con proporción 4:3 y vista previa en tiempo real
+            </p>
+          </div>
+        </section>
+
+        <!-- Features -->
+        <section>
+          <h2>Características Principales</h2>
+          <ul style="font-size: 0.9em; line-height: 1.8">
+            <li>
+              <strong>Soporte de Formato Dual:</strong> Guardar tanto RAW (DNG)
+              como JPEG procesado
+            </li>
+            <li>
+              <strong>Control Total de la Cámara:</strong> Acceso a todas las
+              capacidades de Camera2 API
+            </li>
+            <li>
+              <strong>Proporción 4:3:</strong> Proporciones clásicas del visor
+              de cámara
+            </li>
+            <li>
+              <strong>Metadatos EXIF:</strong> Preservar orientación y
+              parámetros de la cámara
+            </li>
+            <!-- <li>
+              <strong>Procesamiento en Tiempo Real:</strong> Ver resultados
+              inmediatamente después de la captura.
+            </li> -->
+            <!-- <li>
+              <strong>Soporte de Profundidad:</strong> Manejar formato JPEG de
+              profundidad para dispositivos compatibles.
+            </li> -->
+          </ul>
+        </section>
+
+        <!-- Challenges -->
+        <section>
+          <h2>Desafíos Técnicos</h2>
+          <div class="feature-grid">
+            <div class="feature-item">
+              <h3>Gestión de Memoria</h3>
+              <p>
+                Manejar buffers de imágenes grandes eficientemente entre Java,
+                Rust y la GPU
+              </p>
+            </div>
+            <div class="feature-item">
+              <h3>Complejidad de JNI</h3>
+              <p>
+                Conectar de forma segura entre Kotlin y Rust con diferentes
+                modelos de memoria
+              </p>
+            </div>
+            <div class="feature-item">
+              <h3>Sincronización del Pipeline</h3>
+              <p>Coordinar múltiples etapas GPU y operaciones CPU</p>
+            </div>
+            <div class="feature-item">
+              <h3>Precisión del Color</h3>
+              <p>
+                Transformaciones apropiadas de espacio de color y manejo de
+                gamma
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Results -->
+        <section>
+          <h2>Resultados y Rendimiento</h2>
+          <div class="highlight-box">
+            <h3>Tiempo de Procesamiento</h3>
+            <p>Imagen RAW de 12MP: ~100-200ms en dispositivos de gama media</p>
+          </div>
+          <div class="highlight-box">
+            <h3>Calidad de Imagen</h3>
+            <p>
+              Comparable a apps de cámara nativas con control completo sobre el
+              procesamiento
+            </p>
+          </div>
+          <div class="highlight-box">
+            <h3>Experiencia de Desarrollo</h3>
+            <p>
+              Rust + Vulkan proporciona excelente experiencia de desarrollo con
+              seguridad de tipos y rendimiento
+            </p>
+          </div>
+        </section>
+
+        <!-- Build Process -->
+        <section>
+          <h2>Construyendo el Proyecto</h2>
+          <pre><code class="language-bash" data-trim>
+# Instalar toolchain de Rust y targets de Android
+rustup target add aarch64-linux-android armv7-linux-androideabi
+
+# Instalar cargo-ndk para compilación cruzada
+cargo install cargo-ndk
+
+# Construir app Android (compilación del lado de Rust incluida)
+./gradlew assembleDebug
+          </code></pre>
+        </section>
+
+        <!-- Lessons Learned -->
+        <section>
+          <h2>Lecciones Aprendidas</h2>
+          <ul style="font-size: 0.9em; line-height: 1.8">
+            <li>
+              Comprender el pipeline completo de procesamiento de imágenes es
+              crucial
+            </li>
+            <li>
+              El cómputo GPU es esencial para procesamiento de imágenes en
+              tiempo real
+            </li>
+            <li>
+              Las garantías de seguridad de Rust son valiosas incluso en
+              contextos JNI
+            </li>
+            <li>
+              La API Camera2 proporciona flexibilidad increíble pero requiere
+              manejo cuidadoso
+            </li>
+            <li>La ciencia del color es más compleja de lo que parece</li>
+            <li>
+              La integración entre lenguajes requiere gestión cuidadosa de
+              memoria
+            </li>
+          </ul>
+        </section>
+
+        <!-- Future Work -->
+        <section>
+          <h2>Mejoras Futuras</h2>
+          <ul style="font-size: 0.9em; line-height: 1.8">
+            <li>
+              <strong>Procesamiento HDR:</strong> Implementar captura HDR
+              multi-frame y mapeo de tonos
+            </li>
+            <li>
+              <strong>Reducción de Ruido:</strong> Añadir algoritmos de
+              denoising temporal y espacial
+            </li>
+            <li>
+              <strong>Filtros en Tiempo Real:</strong> Aplicar filtros
+              acelerados por GPU a la vista previa
+            </li>
+            <li>
+              <strong>Controles Manuales:</strong> UI para ISO, velocidad de
+              obturación, balance de blancos, etc.
+            </li>
+            <li>
+              <strong>Modo Ráfaga:</strong> Capturar y procesar múltiples frames
+              rápidamente
+            </li>
+            <li>
+              <strong>Integración ML:</strong> Añadir características con IA
+              (detección de escenas, mejora)
+            </li>
+          </ul>
+        </section>
+
+        <!-- Conclusion -->
+        <section
+          data-background-gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+        >
+          <h2>Conclusión</h2>
+          <p style="font-size: 1.1em; line-height: 1.8">
+            Este proyecto demuestra el poder de combinar lenguajes de
+            programación modernos y cómputo GPU para construir aplicaciones
+            móviles de alto rendimiento
+          </p>
+          <div style="margin-top: 50px">
+            <p>
+              <strong>Tecnologías:</strong> Kotlin • Rust • Vulkan • Camera2 API
+            </p>
+            <p>
+              <strong>Conceptos:</strong> Procesamiento de Imágenes • Cómputo
+              GPU • Integración Nativa
+            </p>
+          </div>
+        </section>
+
+        <!-- Q&A -->
+        <section
+          data-background-gradient="linear-gradient(135deg, #764ba2 0%, #667eea 100%)"
+        >
+          <h1>¿Preguntas?</h1>
+          <p style="margin-top: 50px">
+            <small>¡Gracias por su atención!</small>
+          </p>
         </section>
       </div>
     </div>
 
     <script src="node_modules/reveal.js/dist/reveal.js"></script>
+    <script src="node_modules/reveal.js/plugin/notes/notes.js"></script>
+    <script src="node_modules/reveal.js/plugin/highlight/highlight.js"></script>
     <script>
-      Reveal.initialize();
+      Reveal.initialize({
+        hash: true,
+        slideNumber: "c/t",
+        transition: "slide",
+        backgroundTransition: "fade",
+        plugins: [RevealHighlight, RevealNotes],
+
+        // Center slides vertically
+        center: true,
+
+        // Enable navigation controls
+        controls: true,
+        progress: true,
+
+        // Responsive sizing
+        width: 1280,
+        height: 720,
+        margin: 0.1,
+
+        // Display mode
+        display: "block",
+      });
     </script>
   </body>
 </html>
