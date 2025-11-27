@@ -7,10 +7,8 @@
 
     <link rel="stylesheet" href="node_modules/reveal.js/dist/reveal.css" />
     <link rel="stylesheet" href="node_modules/reveal.js/dist/theme/black.css" />
-    <link
-      rel="stylesheet"
-      href="node_modules/reveal.js/plugin/highlight/monokai.css"
-    />
+    <!-- Tokyo Night inspired syntax highlighting -->
+    <link rel="stylesheet" href="tokyo-night.css" />
 
     <style>
       :root {
@@ -240,6 +238,58 @@
         font-size: 0.75em;
         margin: 0.2em 0;
       }
+
+      .reveal .title-main {
+        font-size: 3.5em !important;
+        font-weight: 700 !important;
+        margin-bottom: 0.3em !important;
+        letter-spacing: -0.02em;
+      }
+
+      .reveal .title-subtitle {
+        font-size: 1.3em !important;
+        font-weight: 400 !important;
+        margin-bottom: 1.5em !important;
+        opacity: 0.95;
+      }
+
+      .reveal .title-description {
+        font-size: 0.9em;
+        line-height: 1.6;
+        opacity: 0.85;
+      }
+
+      .reveal .tech-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 0.4em 1em;
+        margin: 0.3em;
+        border-radius: 25px;
+        font-size: 0.9em;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+      }
+
+      .reveal .conclusion-box {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1.5em;
+        border-radius: 15px;
+        margin: 1.5em auto;
+        max-width: 700px;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .reveal .qa-title {
+        font-size: 2em !important;
+        font-weight: 700 !important;
+        margin-bottom: 0.8em !important;
+      }
+
+      .reveal .qa-subtitle {
+        font-size: 1.2em;
+        opacity: 0.9;
+      }
     </style>
   </head>
   <body>
@@ -249,11 +299,13 @@
         <section
           data-background-gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
         >
-          <h1>My Camera</h1>
-          <h3>Procesamiento de Imágenes RAW con Aceleración GPU</h3>
-          <p style="margin-top: 50px">
-            <small>Una Aplicación Personalizada de Cámara Android</small><br />
-            <small>Explorando la Fotografía Computacional en Smartphones</small>
+          <h1 class="title-main">My Camera</h1>
+          <h3 class="title-subtitle">
+            Procesamiento de Imágenes RAW con Aceleración GPU
+          </h3>
+          <p class="title-description" style="margin-top: 3em">
+            Una Aplicación Personalizada de Cámara Android<br />
+            Explorando la Fotografía Computacional en Smartphones
           </p>
         </section>
 
@@ -415,20 +467,19 @@
               <h3>Procesador RAW</h3>
               <p>Rust + Vulkan</p>
             </div>
-            <div
-              class="pipeline-list"
-              style="max-width: 500px; margin: 20px auto"
+            <ul
+              style="
+                font-size: 0.85em;
+                text-align: left;
+                max-width: 500px;
+                margin: 30px auto;
+              "
             >
-              <strong>Pipeline de 6 Etapas GPU:</strong>
-              <ul>
-                <li>Desplazamiento Bayer</li>
-                <li>Normalización</li>
-                <li>Demosaicing</li>
-                <li>Corrección de Color</li>
-                <li>Corrección Gamma</li>
-                <li>Cuantización</li>
-              </ul>
-            </div>
+              <li>Compute shaders GPU para procesamiento paralelo</li>
+              <li>Pipeline multi-etapa de transformación de imágenes</li>
+              <li>Gestión automática de memoria Vulkan</li>
+              <li>Soporte para múltiples patrones de sensor</li>
+            </ul>
           </section>
         </section>
 
@@ -436,102 +487,364 @@
         <section>
           <section>
             <h2>Pipeline de Procesamiento de Imágenes</h2>
-            <p>
+            <p style="font-size: 0.9em">
               Seis etapas aceleradas por GPU transforman los datos RAW del
               sensor en imágenes finales
             </p>
           </section>
 
           <section>
-            <h3>Etapa 1: Desplazamiento del Patrón Bayer</h3>
-            <div class="pipeline-step">
-              <strong>Entrada:</strong> Datos RAW del sensor con patrón CFA
-              arbitrario<br />
-              <strong>Proceso:</strong> Desplazar píxeles para alinear con
-              patrón Bayer RGGB<br />
-              <strong>Salida:</strong> Arreglo Bayer normalizado
+            <h3>Bayer Shift</h3>
+            <div
+              style="
+                display: flex;
+                gap: 20px;
+                align-items: center;
+                margin-top: 30px;
+              "
+            >
+              <div style="flex: 1; text-align: left; font-size: 0.75em">
+                <p style="color: #f093fb; margin-bottom: 15px">
+                  <strong>RGGB · GRBG · GBRG · BGGR</strong>
+                </p>
+                <p style="line-height: 1.6">
+                  Cada sensor tiene un arreglo CFA único.<br />
+                  Alineamos todo al estándar RGGB.
+                </p>
+              </div>
+              <div style="flex: 1">
+                <pre
+                  style="margin: 0; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3)"
+                ><code class="language-rust" data-trim>
+// Desplazar según el patrón del sensor
+RawShifted[xy] = Raw[xy + shift];
+
+// GRBG → RGGB: shift = (1, 0)
+// BGGR → RGGB: shift = (1, 1)
+                </code></pre>
+              </div>
             </div>
-            <pre><code class="language-rust" data-trim>
-// El shader se ajusta según el arreglo de filtros de color
-// RGGB, GRBG, GBRG, o BGGR → RGGB estandarizado
-RawShifted[coordinates] = Raw[coordinates + shiftVector];
-            </code></pre>
           </section>
 
           <section>
-            <h3>Etapa 2: Normalización</h3>
-            <div class="pipeline-step">
-              <strong>Entrada:</strong> Valores RAW de 16 bits con sesgo del
-              sensor<br />
-              <strong>Proceso:</strong> Sustracción de nivel negro + ganancias
-              de balance de blancos<br />
-              <strong>Salida:</strong> Valores normalizados de punto flotante
-              [0.0, 1.0]
+            <h3>Normalización</h3>
+            <div
+              style="
+                display: flex;
+                gap: 20px;
+                align-items: center;
+                margin-top: 30px;
+              "
+            >
+              <div style="flex: 1; text-align: left; font-size: 0.75em">
+                <p style="color: #f093fb; margin-bottom: 15px">
+                  <strong>16-bit → float32 [0.0, 1.0]</strong>
+                </p>
+                <p style="line-height: 1.6">
+                  Removemos el nivel negro del sensor<br />
+                  y aplicamos balance de blancos.
+                </p>
+              </div>
+              <div style="flex: 1">
+                <pre
+                  style="margin: 0; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3)"
+                ><code class="language-rust" data-trim>
+// Nivel negro + white balance
+float n = float(raw - black) 
+        / float(white - black);
+n *= gains[channel];
+                </code></pre>
+              </div>
             </div>
-            <pre><code class="language-rust" data-trim>
-float norm = float(raw - blackLevel) / float(whiteLevel - blackLevel);
-norm *= colorGains[channelIndex];
-            </code></pre>
           </section>
 
           <section>
-            <h3>Etapa 3: Demosaicing</h3>
-            <div class="pipeline-step">
-              <strong>Entrada:</strong> Mosaico Bayer de un solo canal<br />
-              <strong>Proceso:</strong> Algoritmo de interpolación
-              Malvar-He-Cutler<br />
-              <strong>Salida:</strong> Imagen RGB completa con los tres canales
-              de color
+            <h3>Demosaicing</h3>
+            <div
+              style="
+                display: flex;
+                gap: 20px;
+                align-items: center;
+                margin-top: 30px;
+              "
+            >
+              <div style="flex: 1; text-align: left; font-size: 0.75em">
+                <p style="color: #f093fb; margin-bottom: 15px">
+                  <strong>Algoritmo Malvar-He-Cutler</strong>
+                </p>
+                <p style="line-height: 1.6">
+                  De mosaico Bayer (1 canal) a RGB completo.<br />
+                  Interpolación inteligente de vecinos.
+                </p>
+              </div>
+              <div style="flex: 1">
+                <pre
+                  style="margin: 0; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3)"
+                ><code class="language-rust" data-trim>
+// Reconstruir canales faltantes
+float4 rgb = 
+    kA*A + kB*B + kC*C + 
+    kD*D + kE*E + kF*F;
+// Cada pixel → R, G, B completo
+                </code></pre>
+              </div>
             </div>
-            <pre><code class="language-rust" data-trim>
-// Reconstruir valores de color faltantes usando píxeles vecinos
-// Cada píxel obtiene valores R, G y B mediante interpolación
-float4 pattern = kA * A + kB * B + kC * C + kD * D + kE * E + kF * F;
-            </code></pre>
           </section>
 
           <section>
-            <h3>Etapa 4: Corrección de Color</h3>
-            <div class="pipeline-step">
-              <strong>Entrada:</strong> RGB en espacio de color del sensor<br />
-              <strong>Proceso:</strong> Multiplicación matricial al espacio de
-              color sRGB<br />
-              <strong>Salida:</strong> Colores perceptualmente precisos
+            <h3>Corrección de Color</h3>
+            <div
+              style="
+                display: flex;
+                gap: 20px;
+                align-items: center;
+                margin-top: 30px;
+              "
+            >
+              <div style="flex: 1; text-align: left; font-size: 0.75em">
+                <p style="color: #f093fb; margin-bottom: 15px">
+                  <strong>Sensor Space → sRGB</strong>
+                </p>
+                <p style="line-height: 1.6">
+                  Matriz 3×3 transforma el espacio<br />
+                  de color único del sensor a sRGB estándar.
+                </p>
+              </div>
+              <div style="flex: 1">
+                <pre
+                  style="margin: 0; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3)"
+                ><code class="language-rust" data-trim>
+// Transform matricial
+float3 sRGB = mul(
+    colorMatrix, 
+    rawRGB
+);
+                </code></pre>
+              </div>
             </div>
-            <pre><code class="language-rust" data-trim>
-// Transformar del espacio del sensor de la cámara a sRGB estándar
-float3 sRGB = mul(colorCorrectionTransform, rawRGB);
-            </code></pre>
           </section>
 
           <section>
-            <h3>Etapa 5: Corrección Gamma</h3>
-            <div class="pipeline-step">
-              <strong>Entrada:</strong> Valores de luz lineal<br />
-              <strong>Proceso:</strong> Aplicar curva gamma sRGB<br />
-              <strong>Salida:</strong> Valores listos para pantalla
-            </div>
-            <pre><code class="language-rust" data-trim>
-// Función de transferencia sRGB
+            <h3>Corrección Gamma</h3>
+            <div
+              style="
+                display: flex;
+                gap: 20px;
+                align-items: center;
+                margin-top: 30px;
+              "
+            >
+              <div style="flex: 1; text-align: left; font-size: 0.75em">
+                <p style="color: #f093fb; margin-bottom: 15px">
+                  <strong>Linear Light → Display</strong>
+                </p>
+                <p style="line-height: 1.6">
+                  Aplicamos la curva gamma sRGB<br />
+                  para percepción visual correcta.
+                </p>
+              </div>
+              <div style="flex: 1">
+                <pre
+                  style="margin: 0; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3)"
+                ><code class="language-rust" data-trim>
+// sRGB transfer function
 float3 l = 12.92 * linear;
-float3 h = 1.055 * pow(linear, 1/2.4) - 0.055;
-float3 out = select(linear <= 0.0031308, l, h);
-            </code></pre>
+float3 h = 1.055 * pow(linear, 1/2.4) 
+         - 0.055;
+                </code></pre>
+              </div>
+            </div>
           </section>
 
           <section>
-            <h3>Etapa 6: Cuantización</h3>
-            <div class="pipeline-step">
-              <strong>Entrada:</strong> RGB de punto flotante de 16 bits<br />
-              <strong>Proceso:</strong> Convertir y limitar a 8 bits por
-              canal<br />
-              <strong>Salida:</strong> Imagen RGBA8 estándar lista para
-              visualización/almacenamiento
+            <h3>Cuantización</h3>
+            <div
+              style="
+                display: flex;
+                gap: 20px;
+                align-items: center;
+                margin-top: 30px;
+              "
+            >
+              <div style="flex: 1; text-align: left; font-size: 0.75em">
+                <p style="color: #f093fb; margin-bottom: 15px">
+                  <strong>float16 → RGBA8</strong>
+                </p>
+                <p style="line-height: 1.6">
+                  Conversión final a 8 bits por canal.<br />
+                  Lista para guardar o mostrar en pantalla.
+                </p>
+              </div>
+              <div style="flex: 1">
+                <pre
+                  style="margin: 0; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3)"
+                ><code class="language-rust" data-trim>
+// Hardware cuantiza automáticamente
+Quantized[xy] = Rgb[xy];
+
+// float[0..1] → uint8[0..255]
+                </code></pre>
+              </div>
             </div>
-            <pre><code class="language-rust" data-trim>
-// El hardware realiza cuantización automática
-Quantized[coordinates] = Rgb[coordinates];
-            </code></pre>
+          </section>
+
+          <section>
+            <h3>Pipeline Completo</h3>
+            <div style="max-width: 900px; margin: 30px auto; font-size: 0.85em">
+              <div
+                style="
+                  display: flex;
+                  align-items: stretch;
+                  gap: 10px;
+                  margin-bottom: 15px;
+                "
+              >
+                <div
+                  class="feature-item"
+                  style="
+                    flex: 1;
+                    min-height: 100px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                  "
+                >
+                  <h3>Bayer Shift</h3>
+                  <p>RGGB alineado</p>
+                </div>
+                <div
+                  style="
+                    color: #667eea;
+                    font-size: 2em;
+                    display: flex;
+                    align-items: center;
+                  "
+                >
+                  →
+                </div>
+                <div
+                  class="feature-item"
+                  style="
+                    flex: 1;
+                    min-height: 100px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                  "
+                >
+                  <h3>Normalización</h3>
+                  <p>float32 [0,1]</p>
+                </div>
+                <div
+                  style="
+                    color: #667eea;
+                    font-size: 2em;
+                    display: flex;
+                    align-items: center;
+                  "
+                >
+                  →
+                </div>
+                <div
+                  class="feature-item"
+                  style="
+                    flex: 1;
+                    min-height: 100px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                  "
+                >
+                  <h3>Demosaicing</h3>
+                  <p>RGB completo</p>
+                </div>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: flex-end;
+                  padding-right: calc(16.666% + 10px);
+                "
+              >
+                <div style="color: #667eea; font-size: 2em; margin: 5px 0">
+                  ↓
+                </div>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  align-items: stretch;
+                  gap: 10px;
+                  flex-direction: row-reverse;
+                "
+              >
+                <div
+                  class="feature-item"
+                  style="
+                    flex: 1;
+                    min-height: 100px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                  "
+                >
+                  <h3>Color Correction</h3>
+                  <p>Espacio sRGB</p>
+                </div>
+                <div
+                  style="
+                    color: #667eea;
+                    font-size: 2em;
+                    display: flex;
+                    align-items: center;
+                  "
+                >
+                  ←
+                </div>
+                <div
+                  class="feature-item"
+                  style="
+                    flex: 1;
+                    min-height: 100px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                  "
+                >
+                  <h3>Gamma Correction</h3>
+                  <p>Curva display</p>
+                </div>
+                <div
+                  style="
+                    color: #667eea;
+                    font-size: 2em;
+                    display: flex;
+                    align-items: center;
+                  "
+                >
+                  ←
+                </div>
+                <div
+                  class="feature-item"
+                  style="
+                    flex: 1;
+                    min-height: 100px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                  "
+                >
+                  <h3>Cuantización</h3>
+                  <p>RGBA8 final</p>
+                </div>
+              </div>
+            </div>
+            <div class="highlight-box" style="margin-top: 30px">
+              <p>
+                <strong>⚡ Resultado:</strong> Pipeline secuencial ejecutándose
+                en paralelo en la GPU para máximo rendimiento
+              </p>
+            </div>
           </section>
         </section>
 
@@ -781,19 +1094,12 @@ cargo install cargo-ndk
         <section
           data-background-gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
         >
-          <h2>Conclusión</h2>
-          <p style="font-size: 1.1em; line-height: 1.8">
-            Este proyecto demuestra el poder de combinar lenguajes de
-            programación modernos y cómputo GPU para construir aplicaciones
-            móviles de alto rendimiento
-          </p>
-          <div style="margin-top: 50px">
-            <p>
-              <strong>Tecnologías:</strong> Kotlin • Rust • Vulkan • Camera2 API
-            </p>
-            <p>
-              <strong>Conceptos:</strong> Procesamiento de Imágenes • Cómputo
-              GPU • Integración Nativa
+          <h2 style="font-size: 2em; margin-bottom: 0.8em">Conclusión</h2>
+          <div class="conclusion-box">
+            <p style="font-size: 0.95em; line-height: 1.7; margin: 0">
+              Este proyecto demuestra el poder de combinar lenguajes de
+              programación modernos y cómputo GPU para construir aplicaciones
+              móviles de alto rendimiento
             </p>
           </div>
         </section>
@@ -802,10 +1108,9 @@ cargo install cargo-ndk
         <section
           data-background-gradient="linear-gradient(135deg, #764ba2 0%, #667eea 100%)"
         >
-          <h1>¿Preguntas?</h1>
-          <p style="margin-top: 50px">
-            <small>¡Gracias por su atención!</small>
-          </p>
+          <h2 class="qa-title">¿Preguntas?</h2>
+          <div style="margin: 2em 0; font-size: 3em; opacity: 0.6">💬</div>
+          <p class="qa-subtitle">¡Gracias por su atención!</p>
         </section>
       </div>
     </div>

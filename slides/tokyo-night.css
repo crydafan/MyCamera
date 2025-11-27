@@ -1,0 +1,123 @@
+/*
+ * Tokyo Night theme for highlight.js
+ * Based on Tokyo Night color scheme
+ */
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  background: #1a1b26;
+  color: #a9b1d6;
+}
+
+/* Comments */
+.hljs-comment,
+.hljs-quote {
+  color: #565f89;
+  font-style: italic;
+}
+
+/* Keywords */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-type,
+.hljs-addition {
+  color: #bb9af7;
+}
+
+/* Strings */
+.hljs-string,
+.hljs-meta .hljs-string {
+  color: #9ece6a;
+}
+
+/* Functions */
+.hljs-function,
+.hljs-title,
+.hljs-section {
+  color: #7aa2f7;
+}
+
+/* Numbers */
+.hljs-number,
+.hljs-regexp,
+.hljs-link {
+  color: #ff9e64;
+}
+
+/* Variables */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-attribute {
+  color: #7dcfff;
+}
+
+/* Built-in */
+.hljs-built_in,
+.hljs-builtin-name {
+  color: #e0af68;
+}
+
+/* Classes */
+.hljs-class .hljs-title {
+  color: #7dcfff;
+}
+
+/* Symbols */
+.hljs-symbol,
+.hljs-bullet {
+  color: #bb9af7;
+}
+
+/* Meta */
+.hljs-meta {
+  color: #7dcfff;
+}
+
+.hljs-meta .hljs-keyword {
+  color: #7dcfff;
+}
+
+/* Deletion */
+.hljs-deletion {
+  color: #f7768e;
+}
+
+/* Emphasis */
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+/* Tags */
+.hljs-tag {
+  color: #f7768e;
+}
+
+.hljs-name {
+  color: #7dcfff;
+}
+
+.hljs-attr {
+  color: #bb9af7;
+}
+
+/* Operators */
+.hljs-operator {
+  color: #89ddff;
+}
+
+/* Punctuation */
+.hljs-punctuation {
+  color: #a9b1d6;
+}
+
+/* DocString/JSDoc */
+.hljs-doctag {
+  color: #7dcfff;
+}
